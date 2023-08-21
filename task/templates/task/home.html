@@ -3,11 +3,43 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<div>
-    <h1>
-        Hello world
-    </h1>
+<!---Button---->
+<div class="d-grid gap-2 col-6 mx-auto bg-">
+  <form method="POST" action="/">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="add_record">
+    {{ form.as_p }}
+  
+
+  <div class="d-grid gap-2 col-12 mx-auto">
+    <button type="submit" class="btn btn-primary" type="button">Add Project</button>
+  </div>
+  
+  </form>
+  
+  
 </div>
+<br>
+
+<!------List---->
+
+  {% if projects %}
+        {% for project in projects %}
+        <div class="d-flex justify-content-center">
+          <div class="card d-grid gap-2 col-6 mx-auto">
+            <h5 class="card-header">{{ project.title}}</h5>
+            <div class="card-body">
+              <p class="card-text">{{ project.description }}</p>
+              <a href="#" class="btn btn-primary">Open</a>
+              <a href="{% url 'delete_record' project.id %}" class="btn btn-danger">Delete</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    
+  {% endif %}
+
+
 
 {% else %}
 <div>
