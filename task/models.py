@@ -10,7 +10,7 @@ class Project(models.Model):
 		return self.title
 
 class tasks(models.Model):
-	project = models.ForeignKey(Project, null=True,blank=True, on_delete=models.CASCADE)
+	project = models.ForeignKey(Project, null=True,blank=True, on_delete=models.CASCADE, related_name="tasks")
 	title = models.CharField(max_length=200)
 	description = models.CharField(max_length=200)
 
