@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.urls import reverse
 
-from task.models import Project
-from .forms import AddProjectForm
+from .models import Project, tasks
+from .forms import AddProjectForm, AddTaskForm
 
 # Create your views here.
 def home(request):
@@ -62,3 +63,21 @@ def delete_record(request, pk):
 	else:
 		messages.success(request, "You Must Be Logged In To Do That...")
 		return redirect('home')
+
+def task_List(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    project_tasks = project.tasks.all()
+    form = AddTaskForm(request.POST or None)
+  
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Task Added...")
+            task_list_url = reverse('task_List', args=[project_id])
+            return redirect(task_list_url)
+            
+    else:
+        return render(request, 'task/taskList.html',{'project':project,'project_tasks':project_tasks,'form':form})
+
+    return render(request, 'task/taskList.html', {'project':project,'project_tasks':project_tasks, 'form':form} )

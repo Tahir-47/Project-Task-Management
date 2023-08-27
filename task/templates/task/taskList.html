@@ -1,0 +1,39 @@
+{% extends 'task/base.html' %}
+
+{% block content %}
+<div class="d-grid gap-2 col-6 mx-auto bg-">
+    <form method="POST" action="">
+      {% csrf_token %}
+  
+      {{ form.as_p }}
+    
+  
+    <div class="d-grid gap-2 col-12 mx-auto">
+      <button type="submit" class="btn btn-primary" type="button">Add Task</button>
+    </div>
+    
+    </form>
+    
+    
+  </div>
+  <br>
+
+    {% if project_tasks %}
+            {% for task in project_tasks %}
+            <div class="d-flex justify-content-center">
+            <div class="card d-grid gap-2 col-6 mx-auto">
+                <h5 class="card-header">{{ task.title}}</h5>
+                <div class="card-body">
+                <p class="card-text">{{ task.description }}</p>
+                </div>
+            </div>
+            </div>
+            {% endfor %}
+
+
+
+    {% else %}
+        <h1>NO TASK</h1>
+    {% endif %}
+
+{% endblock %}
