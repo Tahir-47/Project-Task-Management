@@ -12,11 +12,10 @@ class AddProjectForm(forms.ModelForm):
 
 
 class AddTaskForm(forms.ModelForm):
-	project = forms.ModelChoiceField(queryset=Project.objects.all()) 
 	title = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Task", "class":"form-control", "autocomplete":"off" }), label="")
 	description = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Description", "class":"form-control", "autocomplete":"off"}), label="")
 
 
 	class Meta:
 		model =tasks
-		fields ='__all__'
+		fields =('title', 'description')

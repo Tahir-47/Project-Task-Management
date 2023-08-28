@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import Project, tasks
 from .forms import AddProjectForm, AddTaskForm
@@ -64,20 +65,25 @@ def delete_record(request, pk):
 		messages.success(request, "You Must Be Logged In To Do That...")
 		return redirect('home')
 
+@login_required
 def task_List(request, project_id):
     project = get_object_or_404(Project, id=project_id)
-    project_tasks = project.tasks.all()
+    task = tasks.objects.filter(project=project)
     form = AddTaskForm(request.POST or None)
   
-
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            task = tasks(project=project, title=title, description=description)
+
+            task.save()
+            
             messages.success(request, "Task Added...")
             task_list_url = reverse('task_List', args=[project_id])
             return redirect(task_list_url)
             
     else:
-        return render(request, 'task/taskList.html',{'project':project,'project_tasks':project_tasks,'form':form})
+        return render(request, 'task/taskList.html',{'project':project,'project_tasks':task,'form':form})
 
-    return render(request, 'task/taskList.html', {'project':project,'project_tasks':project_tasks, 'form':form} )
+    return render(request, 'task/taskList.html', {'project':project,'project_tasks':task, 'form':form} )
