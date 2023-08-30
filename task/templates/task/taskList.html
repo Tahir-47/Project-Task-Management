@@ -20,14 +20,19 @@
 
     {% if project_tasks %}
             {% for task in project_tasks %}
-            <div class="d-flex justify-content-center">
-            <div class="card d-grid gap-2 col-6 mx-auto">
-                <h5 class="card-header">{{ task.title}}</h5>
-                <div class="card-body">
-                <p class="card-text">{{ task.description }}</p>
-                </div>
+          <div class="d-flex p-2 justify-content-center ">
+            <div class="card bg-light d-grid gap-2 col-6 mx-auto">
+              <div class="card-body">
+                <form method="post" action="{% url 'update_task_status' task.id %}">
+                  {% csrf_token %}
+                  <input type="checkbox" name="done" {% if task.done %}checked{% endif %}
+                         onchange="this.form.submit()">
+                  {{ task.title }}
+                </form>
+              </div>
             </div>
-            </div>
+          </div>
+          
             {% endfor %}
 
 

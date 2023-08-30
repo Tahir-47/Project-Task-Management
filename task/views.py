@@ -74,8 +74,7 @@ def task_List(request, project_id):
     if request.method == 'POST':
         if form.is_valid():
             title = form.cleaned_data['title']
-            description = form.cleaned_data['description']
-            task = tasks(project=project, title=title, description=description)
+            task = tasks(project=project, title=title)
 
             task.save()
             
@@ -87,3 +86,12 @@ def task_List(request, project_id):
         return render(request, 'task/taskList.html',{'project':project,'project_tasks':task,'form':form})
 
     return render(request, 'task/taskList.html', {'project':project,'project_tasks':task, 'form':form} )
+
+
+def update_task_status(request, task_id):
+    task = tasks.objects.get(pk=task_id)
+    if request.method == "POST":
+        done = request.POST.get("done") == "on"
+        task.done = done
+        task.save()
+    return redirect('task_List', project_id=task.project_id)
