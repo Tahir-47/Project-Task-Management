@@ -4,14 +4,17 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+from datetime import datetime
+
 from .models import Project, tasks
 from .forms import AddProjectForm, AddTaskForm
 
 # Create your views here.
 def home(request):
     form = AddProjectForm(request.POST or None)
-
     projects = Project.objects.all()
+
+    today = datetime.today().date()
 
     #Check to see if logging in 
     if request.method == 'POST':
@@ -36,6 +39,9 @@ def home(request):
     else:
         for project in projects:
             if tasks.objects.filter(project=project).exists():
+                if today > project.date:
+                    project.deadline = True
+                    project.save()
                 taskItems = tasks.objects.filter(project=project)
                 all_tasks_completed = all(task.done for task in taskItems)
                 project.completed = all_tasks_completed

@@ -4,11 +4,12 @@ from .models import Project, tasks
 class AddProjectForm(forms.ModelForm):
 	title = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Project title", "class":"form-control"}), label="")
 	description = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Project description", "class":"form-control"}), label="")
+	date = forms.DateField(required=True, widget=forms.DateInput(attrs={"type": "date", "class":"form-control"}), label="")
 
 
 	class Meta:
 		model = Project
-		fields = ('title', 'description')
+		fields = ('title', 'description', 'date')
 
 
 class AddTaskForm(forms.ModelForm):
