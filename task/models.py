@@ -6,7 +6,6 @@ class Project(models.Model):
 	description = models.CharField(max_length=200)
 	date = models.DateField(default='2023-08-31')
 	completed = models.BooleanField(default=False) 
-	deadline = models.BooleanField(default=False) 
 
 
 	def __str__(self):

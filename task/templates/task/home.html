@@ -30,7 +30,7 @@
             <div class="card-header">
               <h5 class="">{{ project.title}} {% if project.completed %} (Completed){% endif %} </h5>
               <p>Deadline: {{ project.date}}</p>
-              <p style="color:red;">{% if project.deadline and not project.completed %}Deadline crossed!{% endif %}</p>
+              <p style="color:red;">{% if today > project.date and not project.completed %}Deadline crossed!{% endif %}</p>
             </div>
             <div class="card-body">
               <p class="card-text">{{ project.description }} </p>

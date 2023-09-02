@@ -38,16 +38,12 @@ def home(request):
                 return redirect('home')
     else:
         for project in projects:
-            if tasks.objects.filter(project=project).exists():
-                if today > project.date:
-                    project.deadline = True
-                    project.save()
                 taskItems = tasks.objects.filter(project=project)
                 all_tasks_completed = all(task.done for task in taskItems)
                 project.completed = all_tasks_completed
                 project.save()
                 
-        return render(request, 'task/home.html',{'projects':projects, 'form': form})
+        return render(request, 'task/home.html',{'projects':projects, 'form': form, 'today':today })
 
 
 def logout_user(request):
